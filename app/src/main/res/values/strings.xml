@@ -1,0 +1,88 @@
+<resources>
+    <string name="app_name">Timetable</string>
+    <string name="txt_co">Kaist Student ID</string>
+    <string name="txt_pass">Password</string>
+    <string name="et_name">Name</string>
+    <string name="bt_connection">Connexion</string>
+    <string name="cb_prof">Enter as a professor</string>
+
+
+    <string name="settings">Settings</string>
+    <string name="notifications">Notification</string>
+    <string name="createv">Create an event</string>
+    <string name="modify">Modify an event</string>
+    <string name="txt_logout">Log out</string>
+
+    <string name="txt_date">Date of today</string>
+
+    <string name="txt_hr1">7:00 \- 8:00</string>
+    <string name="txt_hr2">8:00 \- 9:00</string>
+    <string name="txt_hr3">9:00 \- 10:00</string>
+    <string name="txt_hr4">10:00 \- 11:00</string>
+    <string name="txt_hr5">11:00 \- 12:00</string>
+    <string name="txt_hr6">12:00 \- 13:00</string>
+    <string name="txt_hr7">13:00 \- 14:00</string>
+    <string name="txt_hr8">14:00 \- 15:00</string>
+    <string name="txt_hr9">15:00 \- 16:00</string>
+    <string name="txt_hr10">16:00 \- 17:00</string>
+    <string name="txt_hr11">17:00 \- 18:00</string>
+    <string name="txt_hr12">18:00 \- 19:00</string>
+    <string name="txt_hr13">19:00 \- 20:00</string>
+    <string name="txt_hr14">20:00 \- 21:00</string>
+    <string name="txt_hr15">21:00 \- 22:00</string>
+    <string name="txt_hr16">22:00 \- 23:00</string>
+    <string name="txt_hr17">23:00 \- 00:00</string>
+
+    <string name="bt_event">Events</string>
+    
+    <string name="txt_hours">Hours</string>
+    <string name="txt_event">Event</string>
+    <string name="txt_location">Location</string>
+
+    <string name="txt_choose_ev">Please choose a date</string>
+    
+    <string name="txt_eventname">Event name</string>
+    <string name="txt_StartHour">Start Hour</string>
+    <string name="txt_EndingHour">Ending Hour</string>
+    <string name="txt_Addper">Add person to share list</string>
+    <string name="txt_delpers">Delete person from share list</string>
+    <string name="txt_desc">Description</string>
+    <string name="txt_place">Location</string>
+    <string name="txt_create">Create</string>
+
+    <string name="txt_delete">Delete</string>
+    <string name="txt_modify">Modify</string>
+
+    <string name="txt_newb">You\'re not the owner you can only delete the event from your time table</string>
+
+
+
+
+
+
+
+
+
+    <string-array name="txt_hours">
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+        <item> </item>
+    </string-array>
+
+
+    <string name="contDesc">Todolater</string>
+</resources>
