@@ -27,7 +27,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.13" />
 
-    <CalendarView
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarevent2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

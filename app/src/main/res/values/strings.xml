@@ -5,12 +5,15 @@
     <string name="et_name">Name</string>
     <string name="bt_connection">Connexion</string>
     <string name="cb_prof">Enter as a professor</string>
+    <string name="cb_pro">Professor</string>
 
 
     <string name="settings">Settings</string>
     <string name="notifications">Notification</string>
     <string name="createv">Create an event</string>
     <string name="modify">Modify an event</string>
+    <string name="add">Add student to Database</string>
+    <string name="del">Delete student</string>
     <string name="txt_logout">Log out</string>
 
     <string name="txt_date">Date of today</string>
@@ -56,33 +59,10 @@
     <string name="txt_newb">You\'re not the owner you can only delete the event from your time table</string>
 
 
-
-
-
-
-
-
-
-    <string-array name="txt_hours">
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
-    </string-array>
-
-
     <string name="contDesc">Todolater</string>
+    
+    
+    <string name="Add">Add to \n Database</string>
+    <string name="Cancel">Cancel</string>
+    <string name="confpass">Confirm password</string>
 </resources>

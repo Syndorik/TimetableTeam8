@@ -3,6 +3,7 @@ package allani.alexandre.timetable;
 import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,9 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.CalendarView;
 import android.widget.Toast;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import allani.alexandre.timetable.Calendarevie.EventDecorator;
 import allani.alexandre.timetable.database.AppDatabase;
 import allani.alexandre.timetable.database.PersonalEvent;
 import allani.alexandre.timetable.database.user;
@@ -24,12 +31,12 @@ import allani.alexandre.timetable.database.user;
 
 public class modifyfirstController extends AppCompatActivity {
 
-    CalendarView mCalendarView;
+    MaterialCalendarView mCalendarView;
     int year;
     int month;
     int day;
     boolean ret = false;
-    String date;
+    String datee;
     String uid;
     AppDatabase db;
     int dayOfWeek;
@@ -38,11 +45,29 @@ public class modifyfirstController extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modifyfirst);
-        mCalendarView = (CalendarView) findViewById(R.id.calendarevent2);
+        mCalendarView = (MaterialCalendarView) findViewById(R.id.calendarevent2);
         uid = getIntent().getStringExtra("uid");
         db =  Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"mydb").fallbackToDestructiveMigration().build();
 
 
+        mCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                ret = false;
+                year = date.getYear();
+                month = date.getMonth();
+                day = date.getDay();
+                Calendar c = Calendar.getInstance();
+                c.set(year,month,day);
+                dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+                datee = day+"/"+month+"/"+year;
+                new modifyfirstController.AsyncTaskRunner().execute("c","c","c");
+            }
+        });
+
+        new modifyfirstController.AsyncTaskRunnerUpdateUI().execute("c","c","c");
+
+        /*
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
@@ -58,7 +83,7 @@ public class modifyfirstController extends AppCompatActivity {
 
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -100,7 +125,7 @@ public class modifyfirstController extends AppCompatActivity {
             else {
                 for (int k = 0; k < anev.length; k++) {
                     PersonalEvent ev = db.mPersonalEventDao().getEventFromEID(Integer.parseInt(anev[k]));
-                    if (ev.getDate().equals(date)) {
+                    if (ev.getDate().equals(datee)) {
                         cond = false;
                         break;
                     }
@@ -118,7 +143,7 @@ public class modifyfirstController extends AppCompatActivity {
             super.onPostExecute(s);
             if(ok .equals("1")){
                 AlertDialog.Builder builder = new AlertDialog.Builder(modifyfirstController.this);
-                builder.setMessage("There are no event to modify on this date")
+                builder.setMessage("There are no event to modify on this date. Dates marked by a red dot contains event that can be modified")
                         .setTitle("NO EVENT ON THIS DATE\n")
                         .setPositiveButton("Return to main menu", new DialogInterface.OnClickListener() {
                             @Override
@@ -145,6 +170,59 @@ public class modifyfirstController extends AppCompatActivity {
                 myIntent.putExtra("weekDay",dayOfWeek);
                 myIntent.putExtra("uid",uid);
                 startActivity(myIntent);
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+        }
+    }
+
+
+    private class AsyncTaskRunnerUpdateUI extends AsyncTask<String,String,String> {
+        List<PersonalEvent> mylpe = new ArrayList<>();
+        ArrayList<CalendarDay> dates = new ArrayList<>();
+        boolean listevempty = true;
+        PersonalEvent pe;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            int day;
+            int month;
+            int year;
+            String[] theD;
+            user usr = db.mUserDao().getuserFromId(uid);
+            String spe[] = usr.getListevent().split(System.getProperty("line.separator"));
+            if(!usr.getListevent().isEmpty()) {
+                listevempty = false;
+                for (int k = 0; k < spe.length; k++) {
+                    pe = db.mPersonalEventDao().getEventFromEID(Integer.parseInt(spe[k]));
+                    mylpe.add(pe);
+                }
+                //We have all events of the guy
+                for (int k = 0; k < mylpe.size(); k++) {
+                    theD = mylpe.get(k).getDate().split("/");
+                    day = Integer.parseInt(theD[0]);
+                    month = Integer.parseInt(theD[1]);
+                    year = Integer.parseInt(theD[2]);
+
+                    dates.add(CalendarDay.from(year, month, day));
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(!listevempty) {
+                mCalendarView.addDecorator(new EventDecorator(Color.RED, dates));
             }
         }
 

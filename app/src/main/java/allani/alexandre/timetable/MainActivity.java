@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(MainActivity.this, calendarController.class);
                 printdb();
                 myIntent.putExtra("uid",usr.getKaist_id());
+                myIntent.putExtra("Priority",usr.getProf());
                 startActivity(myIntent);
 
             }
@@ -111,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
         for(int k=0; k<lu.size(); k++){
             Log.d("Debug","usr : "+lu.get(k).getKaist_id());
             Log.d("Debug","EID : "+lu.get(k).getListevent());
+            Log.d("Debug","Pwd : "+lu.get(k).getPass());
+            Log.d("Debug","Prof : "+lu.get(k).getProf());
+            Log.d("Debug","------------------------------");
         }
     }
 
