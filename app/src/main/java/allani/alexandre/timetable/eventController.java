@@ -355,7 +355,7 @@ public class eventController extends AppCompatActivity{
                                 + "Event name : " + anev.getEvent_name() + "\n"
                                 + "Event ID (EID): " + anev.getEid() + "\n"
                                 + "Owner: " + anev.getUid() + "\n"
-                                + "People in this event:\n " + anev.getPerso_id() + "\n"
+                                + "People in this event:\n" + anev.getPerso_id() + "\n"
                                 + "Date " + day+"/"+(month+1)+"/"+year + "\n"
                                 + "Starting hour: " + anev.getStart_time() + "\n"
                                 + "Ending hour: " + anev.getEnd_time() + "\n\n"
