@@ -354,7 +354,7 @@ public class eventController extends AppCompatActivity{
                         message.append("PERSONAL EVENT" + "\n"
                                 + "Event name : " + anev.getEvent_name() + "\n"
                                 + "Event ID (EID): " + anev.getEid() + "\n"
-                                + "Owner: " + anev.getUid() + "\n"
+                                + "Owner: " + anev.getUid() + "\n\n"
                                 + "People in this event:\n" + anev.getPerso_id() + "\n"
                                 + "Date " + day+"/"+(month+1)+"/"+year + "\n"
                                 + "Starting hour: " + anev.getStart_time() + "\n"
