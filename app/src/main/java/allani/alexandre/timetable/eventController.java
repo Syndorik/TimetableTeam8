@@ -89,6 +89,7 @@ public class eventController extends AppCompatActivity{
     TextView txt_loc17;
 
     Button button_event;
+    boolean priority;
 
 
 
@@ -161,6 +162,7 @@ public class eventController extends AppCompatActivity{
         day = getIntent().getIntExtra("day",0);
         weekday = getIntent().getIntExtra("weekDay",0);
         uid = getIntent().getStringExtra("uid");
+        priority = getIntent().getBooleanExtra("Priority",false);
         mdateoftoday = (TextView) findViewById(R.id.txt_dot);
         db =  Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"mydb").fallbackToDestructiveMigration().build();
 
@@ -419,6 +421,7 @@ public class eventController extends AppCompatActivity{
     public void onBackPressed(){
         Intent myIntent = new Intent(eventController.this, calendarController.class);
         myIntent.putExtra("uid",uid);
+        myIntent.putExtra("Priority",priority);
         startActivity(myIntent);
     }
 

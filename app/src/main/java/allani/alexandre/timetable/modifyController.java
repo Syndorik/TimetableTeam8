@@ -65,6 +65,7 @@ public class modifyController extends AppCompatActivity {
     PersonalEvent theEvent;
 
     ScrollView sc;
+    boolean priority;
 
 
 
@@ -80,6 +81,7 @@ public class modifyController extends AppCompatActivity {
         mdateoftoday = (TextView) findViewById(R.id.txt_m_dot2);
         date = ""+day+"/"+month+"/"+year;
         uid = getIntent().getStringExtra("uid");
+        priority = getIntent().getBooleanExtra("Priority",false);
         db =  Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"mydb").fallbackToDestructiveMigration().build();
         sc = (ScrollView) findViewById(R.id.scrollView2);
 
@@ -272,6 +274,7 @@ public class modifyController extends AppCompatActivity {
 
             Intent myIntent = new Intent(modifyController.this, calendarController.class);
             myIntent.putExtra("uid",uid);
+            myIntent.putExtra("Priority",priority);
             startActivity(myIntent);
             return null;
         }
@@ -348,6 +351,7 @@ public class modifyController extends AppCompatActivity {
 
             Intent myIntent = new Intent(modifyController.this, calendarController.class);
             myIntent.putExtra("uid",uid);
+            myIntent.putExtra("Priority",priority);
             startActivity(myIntent);
 
             return null;
@@ -416,6 +420,7 @@ public class modifyController extends AppCompatActivity {
 
             Intent myIntent = new Intent(modifyController.this, calendarController.class);
             myIntent.putExtra("uid",uid);
+            myIntent.putExtra("Priority",priority);
             startActivity(myIntent);
 
             return null;
@@ -646,5 +651,16 @@ public class modifyController extends AppCompatActivity {
             Log.d("Debug", "EID : "+ le.get(j).getEid());
             Log.d("Debug","Perso ID: "+ le.get(j).getPerso_id());
         }
+    }
+
+
+    @Override
+    public void onBackPressed(){
+
+        Intent myIntent = new Intent(modifyController.this,calendarController.class);
+        myIntent.putExtra("uid",uid);
+        myIntent.putExtra("Priority",priority);
+        startActivity(myIntent);
+
     }
 }

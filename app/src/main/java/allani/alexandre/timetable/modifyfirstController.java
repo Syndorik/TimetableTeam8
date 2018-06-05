@@ -40,6 +40,7 @@ public class modifyfirstController extends AppCompatActivity {
     String uid;
     AppDatabase db;
     int dayOfWeek;
+    boolean priority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -47,6 +48,7 @@ public class modifyfirstController extends AppCompatActivity {
         setContentView(R.layout.activity_modifyfirst);
         mCalendarView = (MaterialCalendarView) findViewById(R.id.calendarevent2);
         uid = getIntent().getStringExtra("uid");
+        priority = getIntent().getBooleanExtra("Priority",false);
         db =  Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"mydb").fallbackToDestructiveMigration().build();
 
 
@@ -89,7 +91,10 @@ public class modifyfirstController extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         if(ret){
-            finish();
+            Intent myIntent = new Intent(modifyfirstController.this,calendarController.class);
+            myIntent.putExtra("uid",uid);
+            myIntent.putExtra("Priority",priority);
+            startActivity(myIntent);
         }
         else{
             Toast.makeText(modifyfirstController.this,"Press Back Button again to return to main menu", Toast.LENGTH_SHORT).show();
@@ -150,6 +155,7 @@ public class modifyfirstController extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 Intent myIntent = new Intent(modifyfirstController.this,calendarController.class);
                                 myIntent.putExtra("uid",uid);
+                                myIntent.putExtra("Priority",priority);
                                 startActivity(myIntent);
                             }
                         }).setNegativeButton("Ok", new DialogInterface.OnClickListener() {
@@ -169,6 +175,7 @@ public class modifyfirstController extends AppCompatActivity {
                 myIntent.putExtra("day",day);
                 myIntent.putExtra("weekDay",dayOfWeek);
                 myIntent.putExtra("uid",uid);
+                myIntent.putExtra("Priority",priority);
                 startActivity(myIntent);
             }
         }

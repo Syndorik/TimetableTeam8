@@ -21,6 +21,7 @@ public class createfirst extends AppCompatActivity {
     int day;
     String uid;
     boolean ret = false;
+    boolean priority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -28,6 +29,7 @@ public class createfirst extends AppCompatActivity {
         setContentView(R.layout.activity_createfirst);
         mCalendarView = (CalendarView) findViewById(R.id.calendarevent);
         uid = getIntent().getStringExtra("uid");
+        priority = getIntent().getBooleanExtra("Priority",false);
 
         mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -46,6 +48,7 @@ public class createfirst extends AppCompatActivity {
                 myIntent.putExtra("day",i2);
                 myIntent.putExtra("weekDay",dayOfWeek);
                 myIntent.putExtra("uid",uid);
+                myIntent.putExtra("Priority",priority);
                 startActivity(myIntent);
             }
         });
@@ -54,7 +57,10 @@ public class createfirst extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         if(ret){
-            finish();
+            Intent myIntent = new Intent(createfirst.this,calendarController.class);
+            myIntent.putExtra("uid",uid);
+            myIntent.putExtra("Priority",priority);
+            startActivity(myIntent);
         }
         else{
             Toast.makeText(createfirst.this,"Press Back Button again to return to main menu", Toast.LENGTH_SHORT).show();

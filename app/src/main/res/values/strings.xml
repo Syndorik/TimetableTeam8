@@ -13,7 +13,7 @@
     <string name="createv">Create an event</string>
     <string name="modify">Modify an event</string>
     <string name="add">Add student to Database</string>
-    <string name="del">Delete student</string>
+    <string name="del">Delete \n student</string>
     <string name="txt_logout">Log out</string>
 
     <string name="txt_date">Date of today</string>
@@ -65,4 +65,5 @@
     <string name="Add">Add to \n Database</string>
     <string name="Cancel">Cancel</string>
     <string name="confpass">Confirm password</string>
+    <string name="delpers">Delete person from database</string>
 </resources>

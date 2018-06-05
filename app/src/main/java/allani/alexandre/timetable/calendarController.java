@@ -31,6 +31,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
@@ -64,6 +65,10 @@ public class calendarController extends AppCompatActivity{
     Button bt_cancel;
     Button bt_add;
     PopupWindow pw;
+
+    EditText et_pop_del_name;
+    Button bt_pop_del_cancel;
+    Button bt_pop_del_del;
 
 
 
@@ -104,6 +109,7 @@ public class calendarController extends AppCompatActivity{
                 myIntent.putExtra("day",dday);
                 myIntent.putExtra("weekDay",dayOfWeek);
                 myIntent.putExtra("uid",uid);
+                myIntent.putExtra("Priority",priority);
                 startActivity(myIntent);
             }
         });
@@ -129,16 +135,17 @@ public class calendarController extends AppCompatActivity{
         if(priority) {
             switch (item.getItemId()) {
                 case R.id.menu_setting:
-                    startActivity(new Intent(this, MainActivity.class));
                     return true;
                 case R.id.menu_create:
                     Intent myIntent = new Intent(this, createfirst.class);
                     myIntent.putExtra("uid", uid);
+                    myIntent.putExtra("Priority",priority);
                     startActivity(myIntent);
                     return true;
                 case R.id.menu_modify:
                     Intent myInttent = new Intent(this, modifyfirstController.class);
                     myInttent.putExtra("uid", uid);
+                    myInttent.putExtra("Priority",priority);
                     startActivity(myInttent);
                     return true;
                 case R.id.menu_addID:
@@ -182,6 +189,38 @@ public class calendarController extends AppCompatActivity{
                 case R.id.menu_notification:
                     new calendarController.AsyncTaskGetNotif().execute("c", "c", "c");
                     return true;
+                case R.id.menu_delete:
+                    LayoutInflater inflater2 = (LayoutInflater) calendarController.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    //Inflate the view from a predefined XML layout (no need for root id, using entire layout)
+                    View layout2 = inflater2.inflate(R.layout.popupdel_layout,null);
+
+                    et_pop_del_name = (EditText) layout2.findViewById(R.id.et_pop_del_name);
+                    bt_pop_del_del = (Button) layout2.findViewById(R.id.bt_pop_del_del);
+                    bt_pop_del_cancel = (Button) layout2.findViewById(R.id.bt_pop_del_cancel);
+                    float density2 =calendarController.this.getResources().getDisplayMetrics().density;
+                    pw = new PopupWindow(layout2,(int)density2*300, (int)density2*600, true);
+
+                    pw.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
+                    bt_pop_del_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pw.dismiss();
+
+                        }
+                    });
+
+                    bt_pop_del_del.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            new calendarController.AsyncTaskDel().execute("c","c","c");
+
+                        }
+                    });
+                    pw.setOutsideTouchable(true);
+                    pw.showAtLocation(layout2, Gravity.CENTER, 0,0);
+
+                    return true;
                 case R.id.menu_logout:
                     startActivity(new Intent(this, MainActivity.class));
                     return true;
@@ -193,16 +232,17 @@ public class calendarController extends AppCompatActivity{
         else {
             switch (item.getItemId()) {
                 case R.id.menu_setting:
-                    startActivity(new Intent(this, MainActivity.class));
                     return true;
                 case R.id.menu_create:
                     Intent myIntent = new Intent(this, createfirst.class);
                     myIntent.putExtra("uid", uid);
+                    myIntent.putExtra("Priority",priority);
                     startActivity(myIntent);
                     return true;
                 case R.id.menu_modify:
                     Intent myInttent = new Intent(this, modifyfirstController.class);
                     myInttent.putExtra("uid", uid);
+                    myInttent.putExtra("Priority",priority);
                     startActivity(myInttent);
                     return true;
                 case R.id.menu_notification:
@@ -221,7 +261,6 @@ public class calendarController extends AppCompatActivity{
     @Override
     public void onBackPressed(){
         if(quit){
-            finish();
             moveTaskToBack(true);
         }
         else{
@@ -232,6 +271,93 @@ public class calendarController extends AppCompatActivity{
 
 
 
+    private class AsyncTaskDel extends AsyncTask<String,String,String> {
+        List<user> lu = new ArrayList<>();
+        boolean donedel = false;
+        PersonalEvent pe;
+        String[] slpe;
+        String[] lue;
+        List<String> lpe;
+        StringBuilder bb;
+        String[] nlu;
+        List<String> nlpe;
+
+        @Override
+        protected String doInBackground(String... strings) {
+            donedel = false;
+            lu = db.mUserDao().getAll();
+            String nametodel = et_pop_del_name.getText().toString();
+            user usr = db.mUserDao().getuserFromId(nametodel);
+
+            slpe = usr.getListevent().split(System.getProperty("line.separator"));
+            if(!usr.getListevent().isEmpty()) {
+                for (int k = 0; k < slpe.length; k++) {
+                    pe =db.mPersonalEventDao().getEventFromEID(Integer.parseInt(slpe[k]));
+
+                    if(pe.getUid().equals(usr.getKaist_id())){
+                        db.mPersonalEventDao().delete_event(pe);
+                        nlu = pe.getPerso_id().split(System.getProperty("line.separator"));
+                        for(int l =0; l< nlu.length; l++){
+                            user nusr = db.mUserDao().getuserFromId(nlu[l]);
+                            nlpe = new ArrayList<>(Arrays.asList(nusr.getListevent().split(System.getProperty("line.separator"))));
+                            nlpe.remove(String.valueOf(pe.getEid()));
+                            bb= new StringBuilder("");
+                            for(int j =0; j< nlpe.size(); j++){
+                                bb.append(nlpe.get(j)+"\n");
+                            }
+                            nusr.setListevent(bb.toString());
+                            db.mUserDao().update(nusr);
+                        }
+
+                    }else{
+                        if(!pe.getPerso_id().isEmpty()){
+                            lue= pe.getPerso_id().split(System.getProperty("line.separator"));
+                            lpe = new ArrayList<>(Arrays.asList(lue));
+                            lpe.remove(nametodel);
+
+                            bb= new StringBuilder("");
+                            for(int j =0; j< lpe.size(); j++){
+                                bb.append(lpe.get(j)+"\n");
+                            }
+
+                            pe.setPerso_id(bb.toString());
+                            db.mPersonalEventDao().UpdatePersonalEvent(pe);
+                        }
+                        else{
+                            Log.d("Debug","THIS IS IMPOSSIBLEEEEEEEE");
+                        }
+                    }
+
+                }
+            }
+            if(usr != null){
+                db.mUserDao().delete(usr);
+                donedel = true;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(donedel){
+                pw.dismiss();
+            }else{
+                Toast.makeText(calendarController.this,"Name entered is not in database", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+        }
+    }
 
 
     private class AsyncTaskAddPerso extends AsyncTask<String,String,String> {

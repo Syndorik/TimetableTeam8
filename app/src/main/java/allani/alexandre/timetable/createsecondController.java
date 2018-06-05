@@ -42,6 +42,7 @@ public class createsecondController extends AppCompatActivity {
     int weekday;
     String uid;
     boolean ret = false;
+    boolean pprio;
 
     boolean parse = true;
 
@@ -100,6 +101,7 @@ public class createsecondController extends AppCompatActivity {
         mstart = (TextView) findViewById(R.id.txt_startH);
         mend = (TextView) findViewById(R.id.txt_endH);
         uid = getIntent().getStringExtra("uid");
+        pprio = getIntent().getBooleanExtra("Priority",false);
         date = ""+day+"/"+month+"/"+year;
 
 
@@ -212,6 +214,7 @@ public class createsecondController extends AppCompatActivity {
                 printdb();
                 Intent myIntent = new Intent(createsecondController.this, calendarController.class);
                 myIntent.putExtra("uid",uid);
+                myIntent.putExtra("Priority",pprio);
                 startActivity(myIntent);
 
 
@@ -388,6 +391,8 @@ public class createsecondController extends AppCompatActivity {
     public void onBackPressed(){
         if(ret){
             Intent myIntent = new Intent(createsecondController.this,calendarController.class);
+            myIntent.putExtra("uid",uid);
+            myIntent.putExtra("Priority",pprio);
             startActivity(myIntent);
         }
         else{

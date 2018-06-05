@@ -67,10 +67,12 @@ public class MainActivity extends AppCompatActivity {
                 user usr1 = new user("20186024", "alexall", false);
                 user usr2 = new user("20186025", "roxall", false);
                 user usr3 = new user("admin", "admin", true);
+                user usr4 = new user("aaa", "aaa", true);
 
                 db.mUserDao().insert(usr1);
                 db.mUserDao().insert(usr2);
                 db.mUserDao().insert(usr3);
+                db.mUserDao().insert(usr4);
             }
             /**/
 
